@@ -16,6 +16,7 @@
     "@heroui/styles": "^3.0.0-beta.6",
     "@heroui/system": "^2.4.26",
     "@heroui/theme": "^2.4.26",
+    "@heroui/user": "^2.2.25",
     "@tailwindcss/vite": "^4.1.18",
     "framer-motion": "^12.34.0",
     "lucide-react": "^0.563.0",
