@@ -7,19 +7,12 @@ import { TrendingUp, Calendar, Star } from 'lucide-react';
 import { GameCard } from '../components/GameCard';
 
 const NewNTrendingPage = () => {
+  
   // Juegos en tendencia (ordenados por agregados recientemente)
   const { data: trendingGames, isLoading: loadingTrending, isError: errorTrending } = useGames({
     page: 1,
     page_size: 20,
     ordering: '-added', // Más agregados = en tendencia
-  });
-
-  // Juegos nuevos (ordenados por fecha de lanzamiento)
-  const { data: newGames, isLoading: loadingNew, isError: errorNew } = useGames({
-    page: 1,
-    page_size: 12,
-    ordering: '-released', // Más recientes
-    dates: '2024-01-01,2026-12-31', // Últimos 2 años
   });
 
   return (
