@@ -27,11 +27,11 @@ const LastReleasesPage = () => {
         <section>
             <div className="flex items-center gap-6 mb-10">
                 <div className="flex items-center gap-4">
-                    <div className="p-3 bg-gradient-to-br from-[#d4af37] to-[#c9a236] rounded-xl shadow-lg shadow-[#d4af37]/20">
+                    <div className="p-3 bg-[#020617]/90 border border-white/80 rounded-xl">
                         <Calendar className="text-white" size={32} />
                     </div>
                     <div>
-                        <h2 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-[#d4af37]">
+                        <h2 className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400 text-3xl tracking-wide">
                             Últimos Lanzamientos
                         </h2>
                         <p className="text-sm text-gray-400 mt-1 font-medium">
