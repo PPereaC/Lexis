@@ -1,20 +1,27 @@
 import { useParams } from 'react-router-dom';
-import { Button } from '@heroui/button';
 import { Chip } from '@heroui/chip';
 import { Skeleton } from '@heroui/skeleton';
-import { Calendar, Globe, Star, Clock, Gamepad2 } from 'lucide-react';
+import { Calendar, Globe, Star } from 'lucide-react';
 import { useGameDetail } from '../hooks/useGames';
+import { useGameScreenshots } from '../hooks/useGames';
 import { SystemRequirementsTabs } from '../components/SystemRequirementsTabs';
+import React, { useState } from 'react';
+import ImageModal from '../components/ImageModal';
 
 const VideoGameDetailsPage = () => {
     const { id } = useParams();
+    const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+    const [selectedImage, setSelectedImage] = useState(null);
 
     // Fallback: Si useParams no funciona por la configuración de rutas, intentamos sacar el ID de la URL manualmente
     const gameId = id || window.location.pathname.split('/').pop();
 
     const { data: game, isLoading, isError } = useGameDetail(gameId);
+    const { data: imagenes, isLoading: loadingImages, isError: errorImages } = useGameScreenshots(gameId);
 
     if (isLoading) return <DetailSkeleton />;
+    if (loadingImages) return <DetailSkeleton />;
+    if (errorImages) return <div className="text-white text-center mt-20 text-xl font-medium">Error al cargar las imágenes del juego. Intentalo de nuevo.</div>;
     if (isError) return <div className="text-white text-center mt-20 text-xl font-medium">Error al cargar el juego. Intenta nuevamente.</div>;
     if (!game) return <div className="text-white text-center mt-20 text-xl font-medium">No se encontró el juego</div>;
 
@@ -31,7 +38,7 @@ const VideoGameDetailsPage = () => {
                 <div className="absolute inset-0 bg-gradient-to-b from-[#0f0f0f] via-transparent to-transparent h-32" />
             </div>
 
-            <div className="relative z-10 max-w-7xl mx-auto px-6 pt-32">
+            <div className="relative z-10 max-w-8xl mx-auto px-32 pt-32">
                 {/* --- HEADER --- */}
                 <div className="flex flex-col justify-end min-h-[40vh] mb-12">
                     <div className="flex flex-row items-center gap-4 mb-4">
@@ -41,17 +48,17 @@ const VideoGameDetailsPage = () => {
                         <Chip startContent={<Star size={16} className="text-yellow-400 fill-yellow-400" />} variant="flat" className="bg-white/10 text-white backdrop-blur-md border border-white/10 flex items-center gap-1 p-3">{game.rating} / 5</Chip>
                     </div>
 
-                    <h1 className="text-5xl md:text-7xl font-black text-white mb-6 drop-shadow-2xl leading-tight tracking-tight">
+                    <h1 className="text-5xl md:text-7xl font-black text-white drop-shadow-2xl leading-tight tracking-tight">
                         {game.name}
                     </h1>
 
-                    <div className="flex flex-wrap gap-3">
+                    {/* <div className="flex flex-wrap gap-3">
                         {game.genres?.map((genre) => (
                             <Chip key={genre.id} color="primary" variant="shadow" className="uppercase font-bold tracking-wider">
                                 {genre.name}
                             </Chip>
                         ))}
-                    </div>
+                    </div> */}
                 </div>
 
                 {/* --- CONTENIDO PRINCIPAL --- */}
@@ -60,13 +67,13 @@ const VideoGameDetailsPage = () => {
                     {/* Columna Izquierda: Descripción y Media */}
                     <div className="lg:col-span-2 space-y-10">
                         {/* Sinopsis */}
-                        <div className="bg-zinc-900/50 backdrop-blur-sm p-8 rounded-3xl border border-white/5 shadow-xl">
-                            <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+                        <div className="bg-zinc-900/50 backdrop-blur-sm p-8 rounded-3xl border border-white/20 shadow-xl">
+                            <h2 className="text-2xl font-bold text-white flex items-center gap-2 mb-4">
                                 Acerca del juego
                             </h2>
                             <div
                                 className="text-gray-300 leading-relaxed text-lg prose prose-invert max-w-none"
-                                dangerouslySetInnerHTML={{ 
+                                dangerouslySetInnerHTML={{
                                     __html: (() => {
                                         const fullText = game.description || game.description_raw || '';
                                         const spanishIndex = fullText.indexOf('Español');
@@ -77,27 +84,40 @@ const VideoGameDetailsPage = () => {
                             />
                         </div>
 
-                        {game.website && (
-                            <div className="flex justify-start">
-                                <Button
-                                    as="a"
-                                    href={game.website}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    color="primary"
-                                    variant="ghost"
-                                    startContent={<Globe size={20} />}
-                                    className="w-full md:w-auto font-semibold"
-                                >
-                                    Visitar sitio oficial
-                                </Button>
+                        {/* Galería de imágenes */}
+                        <div className="bg-zinc-900/50 backdrop-blur-sm p-8 rounded-3xl border border-white/20 shadow-xl space-y-10">
+                            <h2 className="text-2xl font-bold text-white flex items-center gap-2 mb-4">
+                                Imágenes
+                            </h2>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+                                {imagenes?.results.map((img) => (
+                                    <div key={img.id} className="relative">
+                                        <img
+                                            src={img.image}
+                                            alt={`${game.name} screenshot`}
+                                            onClick={() => {
+                                                setSelectedImage(img.image);
+                                                setIsImageModalOpen(true);
+                                            }}
+                                            className="w-full h-auto rounded-lg object-cover border border-white/20 hover:scale-105 transition-transform duration-300 cursor-pointer"
+                                        />
+                                    </div>
+                                ))}
                             </div>
-                        )}
+                        </div>
+                        <ImageModal
+                            imageUrl={selectedImage}
+                            isOpen={isImageModalOpen}
+                            onClose={() => {
+                                setIsImageModalOpen(false);
+                                setSelectedImage(null);
+                            }}
+                        />
                     </div>
 
                     {/* Columna Derecha: Detalles Técnicos */}
                     <div className="space-y-6">
-                        <div className="bg-zinc-900/80 backdrop-blur-md p-6 rounded-3xl border border-white/10 shadow-lg sticky top-24">
+                        <div className="bg-zinc-900/80 backdrop-blur-md p-6 rounded-3xl border border-white/20 shadow-lg sticky top-24">
                             <h3 className="text-xl font-bold text-white mb-6 border-b border-white/10 pb-4">
                                 Información
                             </h3>
@@ -118,9 +138,9 @@ const VideoGameDetailsPage = () => {
 
                                 {/* Tiempo de juego */}
                                 {game.playtime > 0 && (
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-gray-400 flex items-center gap-2 font-medium">
-                                            <Clock size={18} /> Tiempo promedio
+                                    <div className="flex flex-col items-start justify-between">
+                                        <span className="text-gray-400 flex items-center gap-2 font-medium mb-2">
+                                            Tiempo promedio
                                         </span>
                                         <span className="text-white font-bold">{game.playtime} horas</span>
                                     </div>
@@ -131,8 +151,8 @@ const VideoGameDetailsPage = () => {
                                     <span className="text-gray-400 block mb-3 font-medium">Plataformas</span>
                                     <div className="flex flex-wrap gap-2">
                                         {game.parent_platforms?.map(({ platform }) => (
-                                            <Chip key={platform.id} size="sm" variant="flat" className="bg-white/5 text-white border border-white/5 hover:bg-white/10 transition-colors cursor-default">
-                                                {platform.name}
+                                            <Chip key={platform.id} size="base" variant="flat" className="bg-white/5 text-white border border-white/10 hover:bg-white/10 transition-colors cursor-default">
+                                                <span className="px-4">{platform.name}</span>
                                             </Chip>
                                         ))}
                                     </div>
@@ -153,10 +173,24 @@ const VideoGameDetailsPage = () => {
                                         {game.publishers?.map(p => p.name).join(", ") || "N/A"}
                                     </div>
                                 </div>
+
+                                {/* Botón para navegar a la página web */}
+                                {game.website && (
+                                    <div>
+                                        <a
+                                            href={game.website}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="flex items-center justify-center border border-white/20 hover:border-gray-400 rounded-lg transition-colors w-full text-center text-white font-semibold py-2"
+                                        >
+                                            <Globe size={18} className="mr-2" /> Sitio web oficial
+                                        </a>
+                                    </div>
+                                )}
                             </div>
                         </div>
                         {game.platforms?.find(p => p.platform.slug === 'pc')?.requirements && (
-                            <div className="bg-zinc-900/80 backdrop-blur-md p-6 rounded-3xl border border-white/10 shadow-lg sticky top-24">
+                            <div className="bg-zinc-900/80 backdrop-blur-md p-6 rounded-3xl border border-white/20 shadow-lg sticky top-24">
                                 <h3 className="text-xl font-bold text-white mb-6 border-b border-white/10 pb-4">
                                     Requisitos del sistema
                                 </h3>
