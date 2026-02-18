@@ -8,25 +8,30 @@ const parseRequirements = (text) => {
 
     const requirements = {};
     
-    // Extraer OS
-    const osMatch = text.match(/OS:\s*(.*?)(?=Processor:|$)/i);
-    if (osMatch) requirements.os = osMatch[1].trim();
+    // Extraer OS - maneja saltos de línea y espacios
+    const osMatch = text.match(/OS:\s*([\s\S]*?)(?=\n?Processor:|\n?$)/i);
+    if (osMatch) requirements.os = osMatch[1].trim().replace(/\n/g, ' ');
     
     // Extraer Processor
-    const processorMatch = text.match(/Processor:\s*(.*?)(?=Memory:|$)/i);
-    if (processorMatch) requirements.processor = processorMatch[1].trim();
+    const processorMatch = text.match(/Processor:\s*([\s\S]*?)(?=\n?Memory:|\n?$)/i);
+    if (processorMatch) requirements.processor = processorMatch[1].trim().replace(/\n/g, ' ');
     
     // Extraer Memory
-    const memoryMatch = text.match(/Memory:\s*(.*?)(?=Graphics:|$)/i);
-    if (memoryMatch) requirements.memory = memoryMatch[1].trim();
+    const memoryMatch = text.match(/Memory:\s*([\s\S]*?)(?=\n?Graphics:|\n?Network:|\n?$)/i);
+    if (memoryMatch) requirements.memory = memoryMatch[1].trim().replace(/\n/g, ' ');
     
     // Extraer Graphics
-    const graphicsMatch = text.match(/Graphics:\s*(.*?)(?=Storage:|$)/i);
-    if (graphicsMatch) requirements.graphics = graphicsMatch[1].trim();
+    const graphicsMatch = text.match(/Graphics:\s*([\s\S]*?)(?=\n?Network:|\n?Storage:|\n?$)/i);
+    if (graphicsMatch) requirements.graphics = graphicsMatch[1].trim().replace(/\n/g, ' ');
     
     // Extraer Storage
-    const storageMatch = text.match(/Storage:\s*(.*?)(?=Sound Card:|Additional Notes:|$)/i);
-    if (storageMatch) requirements.storage = storageMatch[1].trim().split(" ")[0] + " GB de almacenamiento disponible";
+    const storageMatch = text.match(/Storage:\s*([\s\S]*?)(?=\n?Sound Card:|\n?Additional Notes:|\n?$)/i);
+    if (storageMatch) {
+        const storageText = storageMatch[1].trim();
+        // Extraer solo el número y "GB"
+        const sizeMatch = storageText.match(/(\d+\s*(?:GB|MB))/i);
+        requirements.storage = sizeMatch ? sizeMatch[1] + ' de almacenamiento disponible' : storageText.replace(/\n/g, ' ');
+    }
     
     return requirements;
 };
