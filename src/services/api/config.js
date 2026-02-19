@@ -21,6 +21,7 @@ export const API_ENDPOINTS = {
     tags: '/tags',
     screenshots: (id) => `/games/${id}/screenshots`,
     trailers: (id) => `/games/${id}/movies`,
+    dlcs: (id) => `/games/${id}/additions`,
 };
 
 /**
