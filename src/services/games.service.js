@@ -82,6 +82,16 @@ class GamesService {
     }
   }
 
+  async getDLCs(id) {
+    try {
+      const response = await httpClient.get(API_ENDPOINTS.dlcs(id));
+      return response;
+    } catch (error) {
+      console.error('Error al obtener los DLCs:', error);
+      throw error;
+    }
+  }
+
 }
 
 export const gamesService = new GamesService();

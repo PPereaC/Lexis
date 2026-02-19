@@ -146,3 +146,39 @@ export const useGameTrailers = (id, autoFetch = true) => {
         error
     };
 };
+
+export const useGameDLCs = (id, autoFetch = true) => {
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(LOADING_STATES.IDLE);
+    const [error, setError] = useState(null);
+
+    const fetchGameDLCs = async () => {
+        setLoading(LOADING_STATES.LOADING);
+        setError(null);
+        try {
+            const response = await gamesService.getDLCs(id);
+            setData(response);
+            setLoading(LOADING_STATES.SUCCESS);
+        } catch (err) {
+            setError(err);
+            setLoading(LOADING_STATES.ERROR);
+            console.error('Error en useGameDLCs:', err);
+        }
+    };
+
+    useEffect(() => {
+        if (autoFetch && id) {
+            fetchGameDLCs();
+        }
+    }, [id, autoFetch]);
+
+    return {
+        data,
+        isLoading: loading === LOADING_STATES.LOADING,
+        isSuccess: loading === LOADING_STATES.SUCCESS,
+        isError: loading === LOADING_STATES.ERROR,
+        error
+    };
+};
+
+export default useGames;
