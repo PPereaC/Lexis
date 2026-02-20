@@ -43,14 +43,14 @@ export const GameCard = ({ game }) => {
         "https://heroui.com/images/hero-card-complete.jpeg";
 
     return (
-        <Card isPressable onPress={() => navigate(`/juego/${game.id}`)} className="group relative h-full overflow-hidden rounded-2xl border border-white/15 bg-gradient-to-b from-white/10 via-white/5 to-white/10 backdrop-blur-xl shadow-xl transition-all duration-500 hover:-translate-y-1.5 hover:border-white/25 hover:shadow-[0_28px_90px_-32px_rgba(0,0,0,0.8)]">
+        <Card isPressable onPress={() => navigate(`/juego/${game.id}`)} className="group relative h-full overflow-hidden rounded-2xl border border-white/15 bg-gradient-to-b from-white/10 via-white/5 to-white/10 backdrop-blur-xl shadow-xl transition-all duration-500 hover:-translate-y-1.5 hover:border-white/50 hover:shadow-[0_28px_90px_-32px_rgba(0,0,0,0.8)]">
             <CardHeader className="p-0">
                 <div className="relative w-full aspect-[16/9] overflow-hidden">
                     <img
                         src={cover}
                         alt={game.name}
                         loading="lazy"
-                        className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                        className="h-full w-full object-cover transition-transform duration-700 ease-out"
                     />
                     <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-black/10 to-black/25 opacity-70 transition-opacity duration-500 group-hover:opacity-90" />
                     {/* Rating Badge */}
