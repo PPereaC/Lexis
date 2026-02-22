@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import MainLayout from '../layouts/MainLayout'
-import NewNTrendingPage from '../pages/NewNTrendingPage'
+import NewNTrendingPage from '../pages/TrendingPage'
 import LastReleasesPage from '../pages/LastReleasesPage'
 import VideoGameDetailsPage from '../pages/VideoGameDetailsPage'
 
