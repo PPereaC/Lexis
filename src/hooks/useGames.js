@@ -181,4 +181,38 @@ export const useGameDLCs = (id, autoFetch = true) => {
     };
 };
 
+export const useSearchGames = (params = {}, autoFetch = true) => {
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(LOADING_STATES.IDLE);
+    const [error, setError] = useState(null);
+
+    const fetchSearchGames = async () => {
+        setLoading(LOADING_STATES.LOADING);
+        setError(null);
+        try {
+            const response = await gamesService.searchGames(params);
+            setData(response);
+            setLoading(LOADING_STATES.SUCCESS);
+        } catch (err) {
+            setError(err);
+            setLoading(LOADING_STATES.ERROR);
+            console.error('Error en useSearchGames:', err);
+        }
+    };
+
+    useEffect(() => {
+        if (autoFetch && params.search) {
+            fetchSearchGames();
+        }
+    }, [JSON.stringify(params), autoFetch]);
+
+    return {
+        data,
+        isLoading: loading === LOADING_STATES.LOADING,
+        isSuccess: loading === LOADING_STATES.SUCCESS,
+        isError: loading === LOADING_STATES.ERROR,
+        error
+    };
+};
+
 export default useGames;

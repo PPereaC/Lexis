@@ -92,6 +92,16 @@ class GamesService {
     }
   }
 
+  async searchGames(params = {}) {
+    try {
+      const response = await httpClient.get(API_ENDPOINTS.games, { ...params });
+      return response;
+    } catch (error) {
+      console.error('Error al buscar juegos:', error);
+      throw error;
+    }
+  }
+
 }
 
 export const gamesService = new GamesService();
