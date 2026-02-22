@@ -1,6 +1,7 @@
 import { Card, CardHeader, CardBody } from "@heroui/card";
 import { Chip } from "@heroui/chip";
 import { useNavigate } from "react-router-dom";
+import notFoundImage from '../assets/notfound.png';
 
 const platformIcon = (key) => {
     const icons = {
@@ -40,7 +41,7 @@ export const GameCard = ({ game }) => {
         game.background_image ||
         game.background_image_additional ||
         game?.short_screenshots?.[0]?.image ||
-        "https://heroui.com/images/hero-card-complete.jpeg";
+        notFoundImage;
 
     return (
         <Card isPressable onPress={() => navigate(`/juego/${game.id}`)} className="group relative h-full overflow-hidden rounded-2xl border border-white/15 bg-gradient-to-b from-white/10 via-white/5 to-white/10 backdrop-blur-xl shadow-xl transition-all duration-500 hover:-translate-y-1.5 hover:border-white/50 hover:shadow-[0_28px_90px_-32px_rgba(0,0,0,0.8)]">
