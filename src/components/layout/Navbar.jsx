@@ -89,7 +89,7 @@ export const NavbarApp = () => {
                     <Link
                         className="text-gray-300 hover:text-white transition-colors font-medium text-sm tracking-wide"
                         aria-current="page"
-                        href="/ultimos-lanzamientos"
+                        href="/novedades"
                     >
                         Novedades
                     </Link>

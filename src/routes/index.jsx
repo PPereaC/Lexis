@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import MainLayout from '../layouts/MainLayout'
 import NewNTrendingPage from '../pages/NewNTrendingPage'
 import LastReleasesPage from '../pages/LastReleasesPage'
@@ -9,8 +9,9 @@ import '../App.css'
 function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<MainLayout><NewNTrendingPage /></MainLayout>} />
-      <Route path="/ultimos-lanzamientos" element={<MainLayout><LastReleasesPage /></MainLayout>} />
+      <Route path="/" element={<Navigate to="/tendencias" replace />} />
+      <Route path="/tendencias" element={<MainLayout><NewNTrendingPage /></MainLayout>} />
+      <Route path="/novedades" element={<MainLayout><LastReleasesPage /></MainLayout>} />
       <Route path="/juego/:id" element={<MainLayout><VideoGameDetailsPage /></MainLayout>} />
     </Routes>
   )
