@@ -5,14 +5,34 @@ import { Chip } from '@heroui/chip';
 import { Button } from '@heroui/button';
 import { Flame, Star } from 'lucide-react';
 import { GameCard } from '../components/GameCard';
+import { Pagination } from '../components/layout/pagination';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 const NewNTrendingPage = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [currentPage, setCurrentPage] = useState(() => {
+    const pageFromUrl = parseInt(searchParams.get('page'));
+    return pageFromUrl && pageFromUrl > 0 ? pageFromUrl : 1;
+  });
+  const pageSize = 20;
+
+  // Sincronizar URL cuando cambia la página
+  useEffect(() => {
+    const urlPage = parseInt(searchParams.get('page'));
+    if (urlPage !== currentPage) {
+      setSearchParams({ page: currentPage.toString() });
+    }
+  }, [currentPage, setSearchParams]);
+
   // Juegos en tendencia (ordenados por agregados recientemente)
   const { data: trendingGames, isLoading: loadingTrending, isError: errorTrending } = useGames({
-    page: 1,
-    page_size: 20,
+    page: currentPage,
+    page_size: pageSize,
     ordering: '-added',
   });
+
+  const totalPages = trendingGames?.count ? Math.ceil(trendingGames.count / pageSize) : 1;
 
   return (
     <div className="space-y-12">
@@ -42,6 +62,15 @@ const NewNTrendingPage = () => {
             {trendingGames?.results.map((game) => (
               <GameCard key={game.id} game={game} />
             ))}
+          </div>
+        )}
+        {!loadingTrending && !errorTrending && trendingGames?.results.length > 0 && (
+          <div className="mt-8 flex justify-center">
+            <Pagination 
+              currentPage={currentPage} 
+              totalPages={totalPages} 
+              onPageChange={setCurrentPage} 
+            />
           </div>
         )}
       </section>
