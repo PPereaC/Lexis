@@ -7,23 +7,23 @@ const parseRequirements = (text) => {
     if (!text) return null;
 
     const requirements = {};
-    
+
     // Extraer OS - maneja saltos de línea y espacios
     const osMatch = text.match(/OS:\s*([\s\S]*?)(?=\n?Processor:|\n?$)/i);
     if (osMatch) requirements.os = osMatch[1].trim().replace(/\n/g, ' ');
-    
+
     // Extraer Processor
     const processorMatch = text.match(/Processor:\s*([\s\S]*?)(?=\n?Memory:|\n?$)/i);
     if (processorMatch) requirements.processor = processorMatch[1].trim().replace(/\n/g, ' ');
-    
+
     // Extraer Memory
     const memoryMatch = text.match(/Memory:\s*([\s\S]*?)(?=\n?Graphics:|\n?Network:|\n?$)/i);
     if (memoryMatch) requirements.memory = memoryMatch[1].trim().replace(/\n/g, ' ');
-    
+
     // Extraer Graphics
     const graphicsMatch = text.match(/Graphics:\s*([\s\S]*?)(?=\n?Network:|\n?Storage:|\n?$)/i);
     if (graphicsMatch) requirements.graphics = graphicsMatch[1].trim().replace(/\n/g, ' ');
-    
+
     // Extraer Storage
     const storageMatch = text.match(/Storage:\s*([\s\S]*?)(?=\n?Sound Card:|\n?Additional Notes:|\n?$)/i);
     if (storageMatch) {
@@ -32,13 +32,13 @@ const parseRequirements = (text) => {
         const sizeMatch = storageText.match(/(\d+\s*(?:GB|MB))/i);
         requirements.storage = sizeMatch ? sizeMatch[1] + ' de almacenamiento disponible' : storageText.replace(/\n/g, ' ');
     }
-    
+
     return requirements;
 };
 
 const RequirementItem = ({ icon: Icon, label, value }) => {
     if (!value) return null;
-    
+
     return (
         <div className="flex gap-3 items-start">
             <div className="mt-1 flex-shrink-0">
@@ -60,7 +60,7 @@ export function SystemRequirementsTabs({ requirements }) {
 
     if (!minimum && !recommended) {
         return (
-            <div className="text-gray-400 text-center py-4">
+            <div className="col-span-12 rounded-2xl border border-dashed border-white/20 bg-black/20 p-10 text-center text-zinc-400">
                 No hay información de requisitos disponible
             </div>
         );
@@ -68,9 +68,9 @@ export function SystemRequirementsTabs({ requirements }) {
 
     return (
         <div className="flex w-full flex-col">
-            <Tabs 
-                aria-label="Options" 
-                selectedKey={selected} 
+            <Tabs
+                aria-label="Options"
+                selectedKey={selected}
                 onSelectionChange={setSelected}
                 variant="bordered"
                 classNames={{
