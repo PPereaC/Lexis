@@ -140,7 +140,7 @@ export const NavbarApp = () => {
                 <NavbarItem>
                     <Link
                         className="text-white hover:text-gray-300 transition-colors font-medium text-sm tracking-wide"
-                        href="/eternos"
+                        href="/top"
                     >
                         Eternos
                     </Link>
