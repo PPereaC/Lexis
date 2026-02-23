@@ -2,6 +2,8 @@ import { Card, CardHeader, CardBody } from "@heroui/card";
 import { Chip } from "@heroui/chip";
 import { useNavigate } from "react-router-dom";
 import notFoundImage from '../assets/notfound.png';
+import { Badge } from "@/components/ui/badge"
+import { Calendar, CalendarFold } from "lucide-react";
 
 const platformIcon = (key) => {
     const icons = {
@@ -34,7 +36,7 @@ const platformKey = (platform) => {
     return slug || "pc";
 };
 
-export const GameCard = ({ game }) => {
+export const GameCard = ({ game, nextRelease }) => {
     const navigate = useNavigate();
 
     const cover =
@@ -42,6 +44,10 @@ export const GameCard = ({ game }) => {
         game.background_image_additional ||
         game?.short_screenshots?.[0]?.image ||
         notFoundImage;
+
+    const formatDate = game.released 
+        ? game.released.split('-').reverse().join('-')
+        : 'Próximamente';
 
     return (
         <Card isPressable onPress={() => navigate(`/juego/${game.id}`)} className="group relative h-full overflow-hidden rounded-2xl border border-white/15 bg-gradient-to-b from-white/10 via-white/5 to-white/10 backdrop-blur-xl shadow-xl transition-all duration-500 hover:-translate-y-1.5 hover:border-white/50 hover:shadow-[0_28px_90px_-32px_rgba(0,0,0,0.8)]">
@@ -64,7 +70,7 @@ export const GameCard = ({ game }) => {
                 </div>
             </CardHeader>
             <CardBody className="flex flex-1 flex-col gap-3 px-4 pb-5 pt-3 text-white">
-                <div className="flex items-center gap-3 text-sm text-white/80">
+                <div className="flex justify-between gap-3 text-sm text-white/80">
                     <div className="flex items-center gap-1.5 text-white/90">
                         {[...(new Set(
                             (game.parent_platforms || [])
@@ -85,6 +91,12 @@ export const GameCard = ({ game }) => {
                                 );
                             })}
                     </div>
+                    {nextRelease ? (
+                        <Badge className="bg-gray-800 text-white border border-white/15 hover:bg-gray-800 gap-1.5 py-1">
+                            <CalendarFold data-icon="inline-start" className="h-4 w-4" />
+                            {formatDate}
+                        </Badge>
+                    ) : null}
                 </div>
 
                 {/* Título del juego */}
