@@ -5,6 +5,7 @@ import LastReleasesPage from '../pages/LastReleasesPage'
 import VideoGameDetailsPage from '../pages/VideoGameDetailsPage'
 import SearchResultsPage from '../pages/SearchResultsPage'
 import NextReleasesPage from '../pages/NextReleasesPage'
+import GenreResultsPage from '../pages/GenreResultsPage'
 
 import '../App.css'
 
@@ -17,6 +18,7 @@ function AppRoutes() {
       <Route path="/juego/:id" element={<MainLayout><VideoGameDetailsPage /></MainLayout>} />
       <Route path="/buscar" element={<MainLayout><SearchResultsPage /></MainLayout>} />
       <Route path="/proximamente" element={<MainLayout><NextReleasesPage /></MainLayout>} />
+      <Route path="/genero/:genero" element={<MainLayout><GenreResultsPage /></MainLayout>} />
     </Routes>
   )
 }
