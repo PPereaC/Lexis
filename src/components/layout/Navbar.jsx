@@ -142,7 +142,7 @@ export const NavbarApp = () => {
                         className="text-white hover:text-gray-300 transition-colors font-medium text-sm tracking-wide"
                         href="/top"
                     >
-                        Eternos
+                        Excelentes
                     </Link>
                 </NavbarItem>
 
