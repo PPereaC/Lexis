@@ -1,3 +1,4 @@
+import { useAuth } from '@/contexts/AuthContext'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import {
@@ -14,10 +15,12 @@ import {
     CreditCardIcon,
     Heart,
     LogOutIcon,
+    Shield,
     UserRound,
 } from "lucide-react"
 
 export const DropdownMenuAvatar = ({ navigate, handleLogout }) => {
+    const { isAdmin } = useAuth();
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -42,6 +45,12 @@ export const DropdownMenuAvatar = ({ navigate, handleLogout }) => {
                         <BellIcon />
                         Notificaciones
                     </DropdownMenuItem>
+                    {isAdmin() && (
+                        <DropdownMenuItem className="text-white hover:bg-white/10 hover:text-white cursor-pointer" onClick={() => navigate('/admin')}>
+                            <Shield />
+                            Panel Admin
+                        </DropdownMenuItem>
+                    )}
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem className="text-white hover:bg-white/10 hover:text-red-400 cursor-pointer" onClick={handleLogout}>
