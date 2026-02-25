@@ -2,19 +2,27 @@ import { Card, CardHeader, CardBody } from "@heroui/card";
 import { Chip } from "@heroui/chip";
 import { useNavigate } from "react-router-dom";
 import notFoundImage from '../assets/notfound.png';
+import playstationIcon from '../assets/svgs/playstation.svg';
+import xboxIcon from '../assets/svgs/xbox.svg';
+import nintendoIcon from '../assets/svgs/nintendo.svg';
+import pcIcon from '../assets/svgs/pc.png';
+import appleIcon from '../assets/svgs/apple_dark.svg';
+import androidIcon from '../assets/svgs/android-icon.svg';
+import linuxIcon from '../assets/svgs/linux.svg';
+import macIcon from '../assets/svgs/mac.png';
 import { Badge } from "@/components/ui/badge"
 import { Calendar, CalendarFold } from "lucide-react";
 
 const platformIcon = (key) => {
     const icons = {
-        playstation: (props) => <img src="/src/assets/svgs/playstation.svg" alt="PlayStation" {...props} />,
-        xbox: (props) => <img src="/src/assets/svgs/xbox.svg" alt="Xbox" {...props} />,
-        nintendo: (props) => <img src="/src/assets/svgs/nintendo.svg" alt="Nintendo" {...props} />,
-        pc: (props) => <img src="/src/assets/svgs/pc.png" alt="PC" {...props} />,
-        ios: (props) => <img src="/src/assets/svgs/apple_dark.svg" alt="iOS" {...props} />,
-        android: (props) => <img src="/src/assets/svgs/android-icon.svg" alt="Android" {...props} />,
-        linux: (props) => <img src="/src/assets/svgs/linux.svg" alt="Linux" {...props} />,
-        macOS: (props) => <img src="/src/assets/svgs/mac.png" alt="Mac" {...props} />
+        playstation: (props) => <img src={playstationIcon} alt="PlayStation" {...props} />,
+        xbox: (props) => <img src={xboxIcon} alt="Xbox" {...props} />,
+        nintendo: (props) => <img src={nintendoIcon} alt="Nintendo" {...props} />,
+        pc: (props) => <img src={pcIcon} alt="PC" {...props} />,
+        ios: (props) => <img src={appleIcon} alt="iOS" {...props} />,
+        android: (props) => <img src={androidIcon} alt="Android" {...props} />,
+        linux: (props) => <img src={linuxIcon} alt="Linux" {...props} />,
+        macOS: (props) => <img src={macIcon} alt="Mac" {...props} />
     };
 
     return icons[key] || icons.pc;
