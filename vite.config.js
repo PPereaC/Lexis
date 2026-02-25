@@ -4,8 +4,8 @@ import tailwindcss from '@tailwindcss/vite'
 import { fileURLToPath, URL } from 'node:url'
 
 // https://vite.dev/config/
-export default defineConfig({
-  base: '/Agon/',
+export default defineConfig(({ mode }) => ({
+  base: mode === 'production' ? '/Agon/' : '/',
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
@@ -17,4 +17,4 @@ export default defineConfig({
       strict: false
     }
   }
-})
+}))
