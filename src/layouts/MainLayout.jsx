@@ -16,17 +16,17 @@ const MainLayout = ({ children }) => {
   };
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen overflow-x-hidden">
 
       {/* Área Principal - Navbar y Contenido */}
-      <div className="flex-1 flex flex-col w-full">
+      <div className="flex-1 flex flex-col w-full overflow-x-hidden">
         {/* Navbar */}
         <nav className="w-full sticky top-0 z-30">
           <NavbarApp />
         </nav>
 
         {/* Contenido */}
-        <main className="flex-1 bg-surface-darkest text-white overflow-y-auto">
+        <main className="flex-1 bg-surface-darkest text-white overflow-y-auto overflow-x-hidden">
           {/* Contenido de la Página */}
           <div className={isFullWidthPage ? "" : "p-3 sm:p-4 md:p-6 lg:p-8"}>
             {children}
